@@ -5,12 +5,13 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.json
   def index
-    @label = Label.new
     @note = Note.new
     @notes = Note.all
 
     @label = Label.new
     @labels = Label.all.order(:created_at)
+
+    @commenter = Commenter.new
 
     @notesToDo = Note.where("done = 'false'").order(:updated_at)
     @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
@@ -18,6 +19,10 @@ class NotesController < ApplicationController
     @notesDone = Note.where("done = 'true'").order(:updated_at)
     @notesLabelsDone = @notesDone.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
 
+  end
+
+  # GET /notes/1
+  def show    
   end
 
   # POST /notes

@@ -9,17 +9,17 @@ class LabelsController < ApplicationController
 
   # GET /labels/1
   # GET /labels/1.json
-  def show
-  end
+  #def show
+  #end
 
   # GET /labels/new
-  def new
-    @label = Label.new
-  end
+  #def new
+  #  @label = Label.new
+  #end
 
   # GET /labels/1/edit
-  def edit
-  end
+  #def edit
+  #end
 
   # POST /labels
   # POST /labels.json

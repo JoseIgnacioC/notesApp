@@ -36,16 +36,18 @@
                   <span class="check-note" style=" background-color: <%= colorSpan %>" >
                   
                     <%= f.check_box :done, id: :note_done, class: "margin-auto",:onchange => 'this.form.submit()' %>         
-                  </span>
-                  
-                                      
+                  </span>                  
+
                   <span class="title-note">
                     <%= f.text_field :title, class: "form-control input-title", :onchange => 'this.form.submit()' %>
                   </span>
                 <% end %>
+                
                 <span class="delete-note">
-                  <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe,note, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
-                </span>              
+                <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, note_path(note), style: "margin-right: 5px;"%>
+
+                  <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, note, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
+                </span>
               </li>
             <% end %>
           </ul>
@@ -97,6 +99,8 @@
                   </span>
                 <% end %>
                 <span class="delete-note">
+                <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, note_path(note), style: "margin-right: 5px;"%>
+
                   <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe,note, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
                 </span>              
               </li>

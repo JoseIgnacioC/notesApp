@@ -1,0 +1,22 @@
+<%= form_with(model: [@note, commenter], local: true) do |form| %>
+  <% if commenter.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(commenter.errors.count, "error") %> prohibited this commenter from being saved:</h2>
+
+      <ul>
+      <% commenter.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :message %>
+    <%= form.text_area :message, id: :commenter_message %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
