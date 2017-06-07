@@ -1,0 +1,16 @@
+<%= form_with(model: label, local: true) do |form| %>
+  
+  
+  	<span class="add-title-label">
+    	<%= form.text_field :title, id: "field_add_label", class: "form-control input-title", :placeholder => "Añadir etiqueta" %>
+	</span>
+
+	<span class="add-color-label">
+    	<%= form.color_field( :color, :class => "color-field")  %>
+  	</span>
+    
+    <span class="add-btn-label">
+      <button id="btn-add-label" class="btn btn-default" type="submit">Agregar</button>
+  </span>
+  </div>
+<% end %>
