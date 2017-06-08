@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post 'notes/diHola', to: "notes#diHola"
   
   resources :labels, except: [:index, :show, :new, :edit]
   devise_for :users

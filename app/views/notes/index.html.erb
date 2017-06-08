@@ -91,7 +91,7 @@
 
                   <span class="check-note" style=" background-color: <%= colorSpan %>" >
                   
-                    <%= f.check_box :done, id: :note_done, class: "margin-auto",:onchange => 'this.form.submit()' %>         
+                    <%= f.check_box :done, id: :note_done, class: "margin-auto",:onchange => 'this.form.submit()' %>
                   </span>
 
                   <span class="title-note">
@@ -118,7 +118,7 @@
         <div class="panel-heading title-notes">
           Etiquetas
         </div>      
-        <div class="panel-body list-notes-done">
+        <div class="panel-body list-notes-done" style="position: relative;">
 
           <% if @labels.length == 0 %>
           <span class="msjeEmpty">
@@ -126,7 +126,32 @@
           </span>
           <% end %>
 
-          <ul class="list-group" style="margin-bottom: 0px">
+          <ul class="list-group" style="margin-bottom: 0px; position: absolute; width: 100%; height: 100%; top: 0;">
+
+            <form>
+
+              <% @labels.each do |label| %>
+
+                <% strChecked = "" %>
+                <% if @idsNotesMarcados.include?(label.id.to_s) %>
+                  <% strChecked = "checked" %>                  
+                <% end %>                
+                <li class="list-group-item item-label">
+                  <span class="span-color" style="background-color: <%= label.color %>; z-index: 99;%>">
+                    <% nameCheck = "label"+label.id.to_s %>
+                    <% idCheck = label.id %>
+                    <input type="checkbox" name=<%= nameCheck %> value=<%= idCheck %> class="margin-auto" <%= strChecked %> /> 
+                  </span>
+                </li>            
+              <% end %>
+              
+              <span class="footer-labels">
+                <%= button_to 'Filtrar', notes_path, class: "btn btn-default btn-filter" %>
+              </span>
+            </form>
+          </ul>
+
+          <ul class="list-group" style="margin-bottom: 0px;">
             <% @labels.each do |label| %>
 
               <li class="list-group-item item-label">
@@ -159,7 +184,10 @@
         </div>        
       </div>
   </div>
+  
 
+  <div> <%= @labelsShow %> </div>
+  
 </div>
 
 

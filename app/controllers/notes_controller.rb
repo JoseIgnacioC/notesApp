@@ -5,6 +5,7 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.json
   def index
+
     @note = Note.new
     @notes = Note.all
 
@@ -12,13 +13,39 @@ class NotesController < ApplicationController
     @labels = Label.all.order(:created_at)
 
     @commenter = Commenter.new
+    
+    #@q = params[:q]
 
-    @notesToDo = Note.where("done = 'false'").order(:updated_at)
-    @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+    #@ne = Note.where(:title => @q)
 
-    @notesDone = Note.where("done = 'true'").order(:updated_at)
-    @notesLabelsDone = @notesDone.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+    @idsNotesMarcados = []
 
+    @labels.each do |label|
+      nameParLabel = "label"+label.id.to_s
+      idLabel = params[nameParLabel]
+
+      if !idLabel.nil?
+        @idsNotesMarcados << idLabel
+      end
+    end
+
+    if @idsNotesMarcados.length == 0
+
+      @notesToDo = Note.where("done = 'false'").order(:updated_at)
+      @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+
+      @notesDone = Note.where("done = 'true'").order(:updated_at)
+      @notesLabelsDone = @notesDone.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+      
+    else
+      labelsMarcados = Note.where(:label_id => @idsNotesMarcados)
+
+      @notesToDo = labelsMarcados.where("done='false'").order(:updated_at)
+      @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+
+      @notesDone = labelsMarcados.where("done='true'").order(:updated_at)
+      @notesLabelsDone = @notesDone.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+    end
   end
 
   # GET /notes/1
