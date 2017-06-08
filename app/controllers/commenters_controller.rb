@@ -1,6 +1,7 @@
 class CommentersController < ApplicationController
   before_action :set_commenter, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
+  
   # GET /commenters
   # GET /commenters.json
   def index

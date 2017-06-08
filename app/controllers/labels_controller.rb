@@ -1,5 +1,6 @@
 class LabelsController < ApplicationController
   before_action :set_label, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /labels
   # GET /labels.json
@@ -25,7 +26,7 @@ class LabelsController < ApplicationController
   # POST /labels.json
   def create
     @label = Label.new(label_params)
-
+    @label.user_id = current_user.id
     respond_to do |format|
       if @label.save
         format.html { redirect_to notes_path, notice: 'Label was successfully created.' }

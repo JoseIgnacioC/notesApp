@@ -26,10 +26,13 @@
               <li class="list-group-item item-note">
                 
                 <%= form_for note, :id => "note" do |f| %>
-
-                  <% colorSpan = "transparent" %>                  
+                  
                   <% if !note.label_id.nil? %>
-                    <% colorSpan = @notesLabelsToDo[count].color %>
+                    <% if @notesLabelsToDo[count].title == "00SINETIQUETAR00" %>
+                      <% colorSpan = "transparent" %>
+                    <% else %>
+                      <% colorSpan = @notesLabelsToDo[count].color %>
+                    <% end %>
                     <% count += 1 %>
                   <% end %>
 
@@ -83,9 +86,12 @@
                 
                 <%= form_for note, :id => "note" do |f| %>
 
-                  <% colorSpan = "transparent" %>                  
                   <% if !note.label_id.nil? %>
-                    <% colorSpan = @notesLabelsDone[count].color %>
+                    <% if @notesLabelsDone[count].title == "00SINETIQUETAR00" %>
+                      <% colorSpan = "transparent" %>
+                    <% else %>
+                      <% colorSpan = @notesLabelsDone[count].color %>
+                    <% end %>
                     <% count += 1 %>
                   <% end %>
 
@@ -131,18 +137,19 @@
             <form>
 
               <% @labels.each do |label| %>
-
-                <% strChecked = "" %>
-                <% if @idsNotesMarcados.include?(label.id.to_s) %>
-                  <% strChecked = "checked" %>                  
-                <% end %>                
-                <li class="list-group-item item-label">
-                  <span class="span-color" style="background-color: <%= label.color %>; z-index: 99;%>">
-                    <% nameCheck = "label"+label.id.to_s %>
-                    <% idCheck = label.id %>
-                    <input type="checkbox" name=<%= nameCheck %> value=<%= idCheck %> class="margin-auto" <%= strChecked %> /> 
-                  </span>
-                </li>            
+                <% if label.title != "00SINETIQUETAR00" %>
+                  <% strChecked = "" %>
+                  <% if @idsNotesMarcados.include?(label.id.to_s) %>
+                    <% strChecked = "checked" %>                  
+                  <% end %>                
+                  <li class="list-group-item item-label">
+                    <span class="span-color" style="background-color: <%= label.color %>; z-index: 99;%>">
+                      <% nameCheck = "label"+label.id.to_s %>
+                      <% idCheck = label.id %>
+                      <input type="checkbox" name=<%= nameCheck %> value=<%= idCheck %> class="margin-auto" <%= strChecked %> /> 
+                    </span>
+                  </li>
+                <% end %>
               <% end %>
               
               <span class="footer-labels">
@@ -153,27 +160,27 @@
 
           <ul class="list-group" style="margin-bottom: 0px;">
             <% @labels.each do |label| %>
-
-              <li class="list-group-item item-label">
-                
-                <%= form_for label, :id => "label" do |f| %>
+              <% if label.title != "00SINETIQUETAR00" %>
+                <li class="list-group-item item-label">
                   
-                  <span class="span-color" style="background-color: <%= label.color %>"></span>
+                  <%= form_for label, :id => "label" do |f| %>
+                    
+                    <span class="span-color" style="background-color: <%= label.color %>"></span>
 
-                  <span class="title-label">
-                    <%= f.text_field :title, class: "form-control input-title", :onchange => 'this.form.submit()' %>
+                    <span class="title-label">
+                      <%= f.text_field :title, class: "form-control input-title", :onchange => 'this.form.submit()' %>
+                    </span>
+
+                    <span class="color-label">
+                      <%= f.color_field( :color, :class => "color-field", :onchange => 'this.form.submit()')  %>
+                    </span>
+
+                  <% end %>
+                  <span class="delete-label">
+                    <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, label, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
                   </span>
-
-                  <span class="color-label">
-                    <%= f.color_field( :color, :class => "color-field", :onchange => 'this.form.submit()')  %>
-                  </span>
-
-                <% end %>
-                <span class="delete-label">
-                  <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, label, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
-                </span>
-              </li>
-              
+                </li>
+              <% end %>  
             <% end %>
 
               <li class="list-group-item item-label">

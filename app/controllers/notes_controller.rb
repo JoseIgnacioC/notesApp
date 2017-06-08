@@ -12,12 +12,13 @@ class NotesController < ApplicationController
     @label = Label.new
     @labels = Label.all.order(:created_at)
 
+    if @labels[0].nil?
+      newLabel = Label.new(:title => '00SINETIQUETAR00',:color => '#ffffff', :user_id => current_user.id)
+      newLabel.save
+    end
+
     @commenter = Commenter.new
     
-    #@q = params[:q]
-
-    #@ne = Note.where(:title => @q)
-
     @idsNotesMarcados = []
 
     @labels.each do |label|
@@ -32,24 +33,24 @@ class NotesController < ApplicationController
     if @idsNotesMarcados.length == 0
 
       @notesToDo = Note.where("done = 'false'").order(:updated_at)
-      @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+      @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
 
       @notesDone = Note.where("done = 'true'").order(:updated_at)
-      @notesLabelsDone = @notesDone.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+      @notesLabelsDone = @notesDone.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
       
     else
       labelsMarcados = Note.where(:label_id => @idsNotesMarcados)
 
       @notesToDo = labelsMarcados.where("done='false'").order(:updated_at)
-      @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+      @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
 
       @notesDone = labelsMarcados.where("done='true'").order(:updated_at)
-      @notesLabelsDone = @notesDone.select("notes.id, labels.id, color").joins(:label).order("notes.updated_at")
+      @notesLabelsDone = @notesDone.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
     end
   end
 
   # GET /notes/1
-  def show    
+  def show
   end
 
   # POST /notes
@@ -59,6 +60,11 @@ class NotesController < ApplicationController
     @note.done = false    
     
     @labels = Label.all.order(:created_at)
+
+    if @note.label_id.nil?
+      labelNull = Label.where(:title => "00SINETIQUETAR00")
+      @note.label_id = labelNull[0].id
+    end
 
     @notesToDo = Note.where("done = 'false'").order(:updated_at)
     @notesDone = Note.where("done = 'true'").order(:updated_at)
