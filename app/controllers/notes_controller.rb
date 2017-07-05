@@ -5,20 +5,32 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.json
   def index
-
-    @note = Note.new
-    @notes = Note.all
-
+    
+    #Preparacion de labels
     @label = Label.new
-    @labels = Label.all.order(:created_at)
-
+    @labels = Label.where(:user_id => current_user.id).order(:created_at)
+    
     if @labels[0].nil?
       newLabel = Label.new(:title => '00SINETIQUETAR00',:color => '#ffffff', :user_id => current_user.id)
       newLabel.save
+      @labels = Label.where(:user_id => current_user.id).order(:created_at)
     end
 
+    arrayIdsLabels = []
+    @labels.each do |label|
+      arrayIdsLabels << label.id
+    end
+
+    #Preparacion de notes
+    @note = Note.new
+    @notes = Note.where(:label_id => arrayIdsLabels)
+    #@notes = @labels.select('notes.id, labels.id, labels.title, done, color').joins(:notes).order("notes.updated_at")
+
+    #Preparacion de comentarios
     @commenter = Commenter.new
     
+    #Preparacion de notas a mostrar en index
+    ##Saber que labels estan marcados
     @idsNotesMarcados = []
 
     @labels.each do |label|
@@ -30,16 +42,17 @@ class NotesController < ApplicationController
       end
     end
 
+    # Si no hay labels marcados, mostrar todas las notas
     if @idsNotesMarcados.length == 0
 
-      @notesToDo = Note.where("done = 'false'").order(:updated_at)
+      @notesToDo = @notes.where("done = 'false'").order(:updated_at)      
       @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
 
-      @notesDone = Note.where("done = 'true'").order(:updated_at)
+      @notesDone = @notes.where("done = 'true'").order(:updated_at)
       @notesLabelsDone = @notesDone.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
-      
+    ## Sino mostrar solo las notas de los labels marcados
     else
-      labelsMarcados = Note.where(:label_id => @idsNotesMarcados)
+      labelsMarcados = @notes.where(:label_id => @idsNotesMarcados)
 
       @notesToDo = labelsMarcados.where("done='false'").order(:updated_at)
       @notesLabelsToDo = @notesToDo.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
@@ -51,6 +64,18 @@ class NotesController < ApplicationController
 
   # GET /notes/1
   def show
+
+    @note = Note.find(params[:id])
+    @labels = Label.where(:user_id => current_user.id).order(:created_at)
+
+    @noteLabel = @labels.where(:id => @note.label_id)
+    
+
+    if @noteLabel[0].nil?
+      @permitUser = false
+    else
+      @permitUser = true
+    end
   end
 
   # POST /notes
@@ -59,15 +84,17 @@ class NotesController < ApplicationController
     @note = Note.new(note_params)
     @note.done = false    
     
-    @labels = Label.all.order(:created_at)
+    @labels = Label.where(:user_id => current_user.id).order(:created_at)
+    #@notes = @labels.select('notes.id, labels.id, labels.title, done, color').joins(:notes).order("notes.updated_at")
+    @notes = Note.where(:label_id => @arrayIdsLabels)
 
     if @note.label_id.nil?
-      labelNull = Label.where(:title => "00SINETIQUETAR00")
+      labelNull = Label.where(:title => "00SINETIQUETAR00", :user_id => current_user.id)
       @note.label_id = labelNull[0].id
     end
 
-    @notesToDo = Note.where("done = 'false'").order(:updated_at)
-    @notesDone = Note.where("done = 'true'").order(:updated_at)
+    @notesToDo = @notes.where("done = 'false'").order(:updated_at)
+    @notesDone = @notes.where("done = 'true'").order(:updated_at)
 
     respond_to do |format|
       if @note.save
@@ -85,11 +112,15 @@ class NotesController < ApplicationController
   # PATCH/PUT /notes/1.json
   def update
     
-    @labels = Label.all.order(:created_at)    
-    @notesToDo = Note.where("done = 'false'").order(:updated_at)
-    @notesDone = Note.where("done = 'true'").order(:updated_at)
+    @labels = Label.where(:user_id => current_user.id).order(:created_at)
+    #@notes = @labels.select('notes.id, labels.id, labels.title, done, color').joins(:notes).order("notes.updated_at")
+    @notes = Note.where(:label_id => @arrayIdsLabels)
+
+    @notesToDo = @notes.where("done = 'false'").order(:updated_at)
+    @notesDone = @notes.where("done = 'true'").order(:updated_at)
 
     respond_to do |format|
+      
       if @note.update(note_params)
         format.html { redirect_to notes_path, notice: 'Note was successfully updated.' }
         format.json { render :show, status: :ok, location: @note }

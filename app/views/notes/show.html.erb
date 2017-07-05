@@ -1,71 +1,96 @@
+<% if @permitUser %>
+	<div class="row">
+		<div class="col-md-offset-3 col-md-6 win-edit-note">
 
-<div class="row">
-	<div class="col-md-offset-3 col-md-6 win-edit-note">
+			<%= form_with(model: @note, local: true) do |form| %>
 
-		<%= form_with(model: @note, local: true) do |form| %>
+				<div class="row">
+					<div class="col-md-9">
+						<h3 style="margin: 0px;">
+						<i class="glyphicon glyphicon-check"></i>
+						<%= form.text_field :title, id: :note_title, class: "input-title" %></h3>
+						<span class="span-inflex"> 
+							<h4>Etiqueta: </h4> 
+						</span>
+						<span class="span-inflex"> 
 
-			<div class="row">
-				<div class="col-md-9">
-					<h3 style="margin: 0px;">
-					<i class="glyphicon glyphicon-check"></i>
-					<%= form.text_field :title, id: :note_title, class: "input-title" %></h3>
-					<span class="span-inflex"> <h4>Etiqueta: </h4> </span>
-					<span class="span-inflex"> <%= form.select :label_id, Label.all.collect { |l| [l.title, l.id ]}, include_blank: true, class: "select-label-note" %> </span>
-				</div>
-				<div class="col-md-3">
-					<span class="span-inflex"><h4>Listo: </h4></span>
-					<span class="span-inflex"><%= form.check_box :done, id: :note_done %></span>
-						<%= form.submit 'Cambiar' %>
-					<% end %>
-				</div>
-			</div>
-		
+						<% 	listaSelect = []
+							labelSinEtiquetar = @labels.where(
+								"title = '00SINETIQUETAR00'").collect { |l| 
+								[l.title, l.id ]}								
+							listaSelect << ["Sin etiqueta",labelSinEtiquetar[0][1]]
 
-			<div class="row">
-				<div class="col-md-12">
-		    		<h4>
-		    		<i class="glyphicon glyphicon-comment"></i>
-		    		Añadir comentario</h4>		    		
-		    		<div class="div-add-comment">
-		    			<%= form_for([@note, @note.commenters.build]) do |form|%>
-		    			
-		    				<%= form.text_area :message, id: :commenter_message %>
-		    				<div class="div-submit-comment">
-					    		<%= form.submit 'Agregar' %>
-					  		</div>
+							listaLabels = @labels.where(
+								"title != '00SINETIQUETAR00'").collect { |l| 
+								[l.title, l.id ]}
+
+							listaLabels.each do |label|
+								listaSelect << label
+							end
+						%>
+
+						<%= form.select :label_id, listaSelect, include_blank: false, class: "select-label-note" 
+						%>
+						</span>
+					</div>
+					<div class="col-md-3">
+						<span class="span-inflex"><h4>Listo: </h4></span>
+						<span class="span-inflex"><%= form.check_box :done, id: :note_done %></span>
+							<%= form.submit 'Cambiar' %>
 						<% end %>
-		    		</div>
+					</div>
 				</div>
-				<div class="col-md-12">
-		    		<h4>
-		    		<i class="glyphicon glyphicon-list-alt"></i>		    	
-		    		Comentarios</h4>
-		    		<div class="div-list-comment">
+			
 
-		    		<% countComment = 0 %>
-		    		<% @note.commenters.each do |comment| %>
-		    			<% if !comment.message.nil? %>
-			    			<div class="div-comment">
-			    				<%= comment.message %>
-			    				<% countComment += 1 %>
+				<div class="row">
+					<div class="col-md-12">
+			    		<h4>
+			    		<i class="glyphicon glyphicon-comment"></i>
+			    		Añadir comentario</h4>		    		
+			    		<div class="div-add-comment">
+			    			<%= form_for([@note, @note.commenters.build]) do |form|%>
+			    			
+			    				<%= form.text_area :message, id: :commenter_message %>
+			    				<div class="div-submit-comment">
+						    		<%= form.submit 'Agregar' %>
+						  		</div>
+							<% end %>
+			    		</div>
+					</div>
+					<div class="col-md-12">
+			    		<h4>
+			    		<i class="glyphicon glyphicon-list-alt"></i>		    	
+			    		Comentarios</h4>
+			    		<div class="div-list-comment">
+
+			    		<% countComment = 0 %>
+			    		<% @note.commenters.each do |comment| %>
+			    			<% if !comment.message.nil? %>
+				    			<div class="div-comment">
+				    				<%= comment.message %>
+				    				<% countComment += 1 %>
+				    			</div>
+				    			<div class="separ-comment"></div>
+			    			<% end %>
+			    		<% end %>
+
+			    		<% if countComment == 0 %>
+			    			<div class="div-comment text-center">
+			    				No hay comentarios
 			    			</div>
-			    			<div class="separ-comment"></div>
-		    			<% end %>
-		    		<% end %>
+			    		<% end %>
 
-		    		<% if countComment == 0 %>
-		    			<div class="div-comment text-center">
-		    				No hay comentarios
-		    			</div>
-		    		<% end %>
-
-		    		</div>
-				</div>
-			</div>	
-	<%= link_to 'Back', notes_path %>
+			    		</div>
+					</div>
+				</div>	
+		<%= link_to 'Back', notes_path %>
+		</div>
 	</div>
-</div>
-
+<% else %>
+	<div>
+		Acceso denegado
+	</div>
+<% end %>
 
   
 

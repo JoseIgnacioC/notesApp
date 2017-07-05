@@ -1,12 +1,12 @@
 class CommentersController < ApplicationController
   before_action :set_commenter, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  
+
   # GET /commenters
   # GET /commenters.json
   def index
-    @commenters = Commenter.all
-    @note = Note.find(params[:note_id])    
+    @commenters = Commenter.where(:note_id => params[:note_id])
+    @note = Note.find(params[:note_id])
   end
 
   # GET /commenters/1
@@ -31,8 +31,6 @@ class CommentersController < ApplicationController
     @note = Note.find(params[:note_id])
     @commenter = @note.commenters.create(commenter_params)
     
-    puts "Paso por aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
-
     respond_to do |format|
       if @commenter.save
         format.html { redirect_to note_path(@note), notice: 'Commenter was successfully created.' }

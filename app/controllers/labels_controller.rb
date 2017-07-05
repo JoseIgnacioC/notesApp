@@ -5,7 +5,7 @@ class LabelsController < ApplicationController
   # GET /labels
   # GET /labels.json
   def index
-    @labels = Label.all
+    @labels = Label.where(:user_id => current_user.id).order(:created_at)    
   end
 
   # GET /labels/1
