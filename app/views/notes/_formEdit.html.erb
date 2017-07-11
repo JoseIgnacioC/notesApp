@@ -55,7 +55,7 @@
       <i class="glyphicon glyphicon-comment"></i>
       Añadir comentario</h4>            
       <div class="div-add-comment">
-        <%= form_for([@note, @note.commenters.build]) do |form|%>
+        <%= form_for([@note, @note.commenters.build], remote: true) do |form|%>
         
           <%= form.text_area :message, id: :commenter_message %>
           <div class="div-submit-comment">
@@ -68,24 +68,9 @@
       <h4>
       <i class="glyphicon glyphicon-list-alt"></i>          
       Comentarios</h4>
-      <div class="div-list-comment">
+      <div class="div-list-comment" id="commenters">
 
-      <% countComment = 0 %>
-      <% @note.commenters.each do |comment| %>
-        <% if !comment.message.nil? %>
-          <div class="div-comment">
-            <%= comment.message %>
-            <% countComment += 1 %>
-          </div>
-          <div class="separ-comment"></div>
-        <% end %>
-      <% end %>
-
-      <% if countComment == 0 %>
-        <div class="div-comment text-center">
-          No hay comentarios
-        </div>
-      <% end %>
+        <%= render @note.commenters %>
 
       </div>
   </div>

@@ -34,6 +34,7 @@ class CommentersController < ApplicationController
     respond_to do |format|
       if @commenter.save
         format.html { redirect_to note_path(@note), notice: 'Commenter was successfully created.' }
+        format.js
         format.json { render :show, status: :created, location: @commenter }
       else
         format.html { render :new }
