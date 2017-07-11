@@ -26,11 +26,14 @@ class NotesController < ApplicationController
 
     #Preparacion de notes
     @note = Note.new
-    @notes = Note.where(:label_id => arrayIdsLabels)    
+    @notes = Note.where(:label_id => arrayIdsLabels)
+    @notesToDo = @notes.where("done = 'false'").order(:updated_at)          
+    @notesDone = @notes.where("done = 'true'").order(:updated_at)
 
     #Preparacion de comentarios
     @commenter = Commenter.new
-    
+
+=begin    
     #Preparacion de notas a mostrar en index
     ##Saber que labels estan marcados
     @idsLabelsMarcados = []
@@ -63,9 +66,11 @@ class NotesController < ApplicationController
       @notesDone = labelsMarcados.where("done='true'").order(:updated_at)
       #@notesLabelsDone = @notesDone.select("notes.id, labels.id, labels.title, color").joins(:label).order("notes.updated_at")
     end
+=end    
   end
 
   # GET /notes/1
+=begin
   def show
 
     @note = Note.find(params[:id])
@@ -73,13 +78,13 @@ class NotesController < ApplicationController
 
     @noteLabel = @labels.where(:id => @note.label_id)
     
-
     if @noteLabel[0].nil?
       @permitUser = false
     else
       @permitUser = true
     end
   end
+=end  
 
   #GET /notes/:id/edit
   def edit
@@ -91,18 +96,12 @@ class NotesController < ApplicationController
   def create
     @note = Note.new(note_params)
     @note.done = false    
-    
-    #@labels = Label.where(:user_id => current_user.id).order(:created_at)    
-    #@notes = Note.where(:label_id => @arrayIdsLabels)
   
     #Si al crear no se le asigno un label -> Label por default
     if @note.label_id.nil?
       labelNull = Label.where(:title => "00SINETIQUETAR00", :user_id => current_user.id)
       @note.label_id = labelNull[0].id
     end
-
-    #@notesToDo = @notes.where("done = 'false'").order(:updated_at)
-    #@notesDone = @notes.where("done = 'true'").order(:updated_at)
 
     respond_to do |format|
       if @note.save
@@ -122,15 +121,6 @@ class NotesController < ApplicationController
   # PATCH/PUT /notes/1.json
   def update
     
-    #@labels = Label.where(:user_id => current_user.id).order(:created_at)
-    #@notes = @labels.select('notes.id, labels.id, labels.title, done, color').joins(:notes).order("notes.updated_at")
-    #@notes = Note.where(:label_id => @arrayIdsLabels)
-
-    #@notesToDo = @notes.where("done = 'false'").order(:updated_at)
-    #@notesDone = @notes.where("done = 'true'").order(:updated_at)
-
-    puts "UPDATE"
-
     respond_to do |format|
       
       if @note.update(note_params)

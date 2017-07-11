@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :labels, except: [:index, :show, :new, :edit]
   devise_for :users
   
-  resources :notes, except: [ :new ] do
+  resources :notes, except: [:show, :new ] do
   	resources :commenters
   end
 	

@@ -60,7 +60,7 @@
         <div class="panel-heading title-notes">
           Etiquetas
         </div>      
-        <div class="panel-body list-notes-done" style="position: relative;">
+        <div class="panel-body list-notes" style="position: relative;">
 
           <% if @labels.length == 0 %>
           <span class="msjeEmpty" id="msjeEtiquetas">
@@ -71,14 +71,15 @@
           <ul class="list-group" style="margin-bottom: 0px;">
               <span id="labels">
                 <%= render @labels%>
-              </span> 
-
-              <li class="list-group-item item-label">
-                <%= render 'formLabel', label: @label %>
-              </li>
+              </span>               
           </ul>
           
-        </div>        
+        </div>       
+
+        <div class="panel-footer div-add-notes">
+          <%= render 'formLabel', label: @label %>
+        </div>
+
       </div>
   </div>
   
