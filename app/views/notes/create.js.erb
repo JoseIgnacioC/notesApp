@@ -1,0 +1,7 @@
+$("<%= escape_javascript(render @note) %>").appendTo("#notesToDo");
+
+$('#note_<%= @note.id %>').submitOnCheck();
+
+$(".field-note").find('input[type="text"]').val("");
+$(".field-color-note").find('select').val("");
+$('#btn-add-note').attr('disabled', true);

@@ -1,0 +1,11 @@
+$('#modal-edit').modal('hide');
+	
+	$('#note_<%= @note.id %>').remove();
+<% if @note.done %>	
+	$("<%= escape_javascript(render @note) %>").appendTo("#notesDone");
+<% else %>
+	$("<%= escape_javascript(render @note) %>").appendTo("#notesToDo");
+<% end %>
+
+
+$('#note_<%= @note.id %>').submitOnCheck();

@@ -1,27 +1,85 @@
-<%= form_with(model: note, local: true) do |form| %>
-  <% if note.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(note.errors.count, "error") %> prohibited this note from being saved:</h2>
+<%= form_with(model: @note, remote: true) do |form| %>
 
-      <ul>
-      <% note.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <div class="row">
+          <div class="col-md-9">
+            <h3 style="margin: 0px;">
+            <i class="glyphicon glyphicon-check"></i>
+            <%= form.text_field :title, id: :note_title, class: "input-title" %></h3>
+            <span class="span-inflex"> 
+              <h4>Etiqueta: </h4> 
+            </span>
+            <span class="span-inflex"> 
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title, id: :note_title %>
-  </div>
+            <%  listaSelect = []
+              labelSinEtiquetar = @labels.where(
+                "title = '00SINETIQUETAR00'").collect { |l| 
+                [l.title, l.id ]}               
+              listaSelect << ["Sin etiqueta",labelSinEtiquetar[0][1]]
 
-  <div class="field">
-    <%= form.label :done %>
-    <%= form.check_box :done, id: :note_done %>
-  </div>
+              listaLabels = @labels.where(
+                "title != '00SINETIQUETAR00'").collect { |l| 
+                [l.title, l.id ]}
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+              listaLabels.each do |label|
+                listaSelect << label
+              end
+            %>
+
+            <%= form.select :label_id, listaSelect, include_blank: false, class: "select-label-note" 
+            %>
+            </span>
+          </div>
+          <div class="col-md-3">
+            <span class="span-inflex"><h4>Listo: </h4></span>
+            <span class="span-inflex"><%= form.check_box :done, id: :note_done %></span>
+              <%= form.submit 'Cambiar', :class => "btn btn-primary"%>
+            <% end %>
+          </div>
+        </div>
+      
+
+        <div class="row">
+          <div class="col-md-12">
+              <h4>
+              <i class="glyphicon glyphicon-comment"></i>
+              Añadir comentario</h4>            
+              <div class="div-add-comment">
+                <%= form_for([@note, @note.commenters.build]) do |form|%>
+                
+                  <%= form.text_area :message, id: :commenter_message %>
+                  <div class="div-submit-comment">
+                    <%= form.submit 'Agregar' %>
+                  </div>
+              <% end %>
+              </div>
+          </div>
+          <div class="col-md-12">
+              <h4>
+              <i class="glyphicon glyphicon-list-alt"></i>          
+              Comentarios</h4>
+              <div class="div-list-comment">
+
+              <% countComment = 0 %>
+              <% @note.commenters.each do |comment| %>
+                <% if !comment.message.nil? %>
+                  <div class="div-comment">
+                    <%= comment.message %>
+                    <% countComment += 1 %>
+                  </div>
+                  <div class="separ-comment"></div>
+                <% end %>
+              <% end %>
+
+              <% if countComment == 0 %>
+                <div class="div-comment text-center">
+                  No hay comentarios
+                </div>
+              <% end %>
+
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>

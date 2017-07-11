@@ -10,49 +10,16 @@
 
         <div class="panel-heading title-notes">
           Por hacer
-        </div>      
+        </div>
         <div class="panel-body list-notes">
 
           <% if @notesToDo.length == 0 %>
-          <span class="msjeEmpty">
+          <span class="msjeEmpty" id="msjeTodo">
             <h4> No hay tareas por hacer </h4>
           </span>
           <% end %>
-          <ul class="list-group" style="margin-bottom: 0px">
-            <% count = 0 %>
-
-            <% @notesToDo.each do |note| %>
-
-              <li class="list-group-item item-note">
-                
-                <%= form_for note, :id => "note" do |f| %>
-                  
-                  <% if !note.label_id.nil? %>
-                    <% if @notesLabelsToDo[count].title == "00SINETIQUETAR00" %>
-                      <% colorSpan = "transparent" %>
-                    <% else %>
-                      <% colorSpan = @notesLabelsToDo[count].color %>
-                    <% end %>
-                    <% count += 1 %>
-                  <% end %>
-
-                  <span class="check-note" style=" background-color: <%= colorSpan %>" >
-                  
-                    <%= f.check_box :done, id: :note_done, class: "margin-auto",:onchange => 'this.form.submit()' %>         
-                  </span>                  
-
-                  <span class="title-note">
-                    <%= f.text_field :title, class: "form-control input-title", :onchange => 'this.form.submit()' %>
-                  </span>
-                <% end %>
-                
-                <span class="delete-note">
-                <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, note_path(note), style: "margin-right: 5px;"%>
-
-                  <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, note, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
-                </span>
-              </li>
-            <% end %>
+          <ul id="notesToDo" class="list-group" style="margin-bottom: 0px">
+            <%= render @notesToDo %>
           </ul>
           
         </div>
@@ -74,44 +41,13 @@
         <div class="panel-body list-notes-done">
 
           <% if @notesDone.length == 0 %>
-          <span class="msjeEmpty">
+          <span class="msjeEmpty" id="msjeDone">
             <h4> Sin tareas realizadas</h4>
           </span>
           <% end %>
-          <% count = 0 %>        
-          <ul class="list-group" style="margin-bottom: 0px">
-            <% @notesDone.each do |note| %>
-
-              <li class="list-group-item item-note">
-                
-                <%= form_for note, :id => "note" do |f| %>
-
-                  <% if !note.label_id.nil? %>
-                    <% if @notesLabelsDone[count].title == "00SINETIQUETAR00" %>
-                      <% colorSpan = "transparent" %>
-                    <% else %>
-                      <% colorSpan = @notesLabelsDone[count].color %>
-                    <% end %>
-                    <% count += 1 %>
-                  <% end %>
-
-                  <span class="check-note" style=" background-color: <%= colorSpan %>" >
-                  
-                    <%= f.check_box :done, id: :note_done, class: "margin-auto",:onchange => 'this.form.submit()' %>
-                  </span>
-
-                  <span class="title-note">
-                    <%= f.text_field :title, class: "form-control input-title", :onchange => 'this.form.submit()' %>
-                  </span>
-                <% end %>
-                <span class="delete-note">
-                <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, note_path(note), style: "margin-right: 5px;"%>
-
-                  <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe,note, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
-                </span>              
-              </li>
-              
-            <% end %>
+          
+          <ul id="notesDone" class="list-group" style="margin-bottom: 0px">
+            <%= render @notesDone %>
           </ul>        
         </div>
         
@@ -127,61 +63,15 @@
         <div class="panel-body list-notes-done" style="position: relative;">
 
           <% if @labels.length == 0 %>
-          <span class="msjeEmpty">
+          <span class="msjeEmpty" id="msjeEtiquetas">
             <h4> Sin etiquetas</h4>
           </span>
           <% end %>
-
-          <ul class="list-group" style="margin-bottom: 0px; position: absolute; width: 100%; height: 100%; top: 0;">
-
-            <form>
-
-              <% @labels.each do |label| %>
-                <% if label.title != "00SINETIQUETAR00" %>
-                  <% strChecked = "" %>
-                  <% if @idsNotesMarcados.include?(label.id.to_s) %>
-                    <% strChecked = "checked" %>                  
-                  <% end %>                
-                  <li class="list-group-item item-label">
-                    <span class="span-color" style="background-color: <%= label.color %>; z-index: 99;%>">
-                      <% nameCheck = "label"+label.id.to_s %>
-                      <% idCheck = label.id %>
-                      <input type="checkbox" name=<%= nameCheck %> value=<%= idCheck %> class="margin-auto" <%= strChecked %> /> 
-                    </span>
-                  </li>
-                <% end %>
-              <% end %>
-              
-              <span class="footer-labels">
-                <%= button_to 'Filtrar', notes_path, class: "btn btn-default btn-filter" %>
-              </span>
-            </form>
-          </ul>
-
+          
           <ul class="list-group" style="margin-bottom: 0px;">
-            <% @labels.each do |label| %>
-              <% if label.title != "00SINETIQUETAR00" %>
-                <li class="list-group-item item-label">
-                  
-                  <%= form_for label, :id => "label" do |f| %>
-                    
-                    <span class="span-color" style="background-color: <%= label.color %>"></span>
-
-                    <span class="title-label">
-                      <%= f.text_field :title, class: "form-control input-title", :onchange => 'this.form.submit()' %>
-                    </span>
-
-                    <span class="color-label">
-                      <%= f.color_field( :color, :class => "color-field", :onchange => 'this.form.submit()')  %>
-                    </span>
-
-                  <% end %>
-                  <span class="delete-label">
-                    <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, label, method: :delete, class: "check-box-note",   data: { confirm: 'Are you sure?' } %> 
-                  </span>
-                </li>
-              <% end %>  
-            <% end %>
+              <span id="labels">
+                <%= render @labels%>
+              </span> 
 
               <li class="list-group-item item-label">
                 <%= render 'formLabel', label: @label %>

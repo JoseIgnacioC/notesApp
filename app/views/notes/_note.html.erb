@@ -1,0 +1,22 @@
+
+<li class="list-group-item item-note" id="note_<%= note.id %>" >
+
+
+	<% colorSpan = note.label.color %>
+
+	<%= form_with(model: note, remote: true) do |f| %>  
+  		<span class="check-note" style=" background-color: <%= colorSpan %>" >			
+			<%= f.check_box :done, id: :note_done, class: "margin-auto"%>			
+  		</span>                  
+	<% end %>
+	<span class="title-note ">
+		<%= note.title%>
+	</span>
+	
+	<span class="delete-note">
+		<%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_note_path(note), remote: true, style: "margin-right: 5px;"%>
+		<span>
+  			<%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, note, method: :delete, class: "check-box-note link-delete-note",   data: { confirm: 'Are you sure?' }, :remote => true %> 
+		</span>
+	</span>
+</li>

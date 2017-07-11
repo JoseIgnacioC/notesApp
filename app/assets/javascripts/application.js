@@ -18,8 +18,18 @@
 //= require_tree .
 
 $(document).ready(function(){
+
+    
+    //Momentaneo - esconder mensaje de vacios
+    $('.msjeEmpty').each(function(){
+        $(this).hide();
+    })
+
+    //Deshabilitar  y habilitar boton del formulario para agregar
 	$('#btn-add-note').attr('disabled', true);	
     $('#btn-add-label').attr('disabled', true);
+
+    console.log("HOLA");
 
 	$('#field_add_title').keyup(function(){
         if($(this).val().length !=0){
@@ -41,3 +51,105 @@ $(document).ready(function(){
         }
     })
 });
+
+//Funcion para actualizar estado de una nota
+jQuery.fn.submitOnCheck = function() {    
+    this.find('input[type=checkbox]').click(function() {
+        $(this).closest('form').submit();
+    });
+    return this;
+}
+$(function() {
+    $('.item-note').submitOnCheck();
+});
+
+//Funcion para actualizar el color un label
+jQuery.fn.submitChangeColor = function(){
+    this.find('input[type=color]').change(function(){
+        $(this).closest('form').submit();
+    });
+    return this;
+}
+
+$(function(){
+    $('.color-label').submitChangeColor();
+});
+
+//Funcion para actualizar el titulo de un label
+jQuery.fn.submitChangeLabel = function(){
+    this.find('input[type=text]').change(function(){
+        $(this).closest('form').submit();
+    });
+    return this;
+}
+
+$(function(){
+    $('.title-label').submitChangeLabel();
+});
+
+//Funcion para filtrar labels
+jQuery.fn.filterLabels = function() {
+    this.find('input[type=checkbox]').click(function() {
+        var idLabel = this.name;
+        var idsLabels = labelsChecked();        
+        $.ajax({
+            url: "/notes/filter_labels/"+idLabel,
+            datatype: "JSON",
+            data: {'arrayL': idsLabels},
+            timeout: 10000,
+            beforeSend: function(){
+                $('.notice').html("Cargando...");
+            },
+            error: function(){
+                $('.notice').html("Error...");
+            },
+            success: function(res){
+                if(res){
+                    $('.notice').html("Listo los "+res.length+" notas del label ...");                    
+                    showLabelsSelected(res, idsLabels.length);                    
+                }
+                else{
+                    $('.notice').html("No existe...");
+                }
+            }
+        })
+    });
+    return this;
+}
+$(function() {
+    $('.item-label').filterLabels();
+});
+
+var labelsChecked = function(){
+
+    var idsLabels = [];    
+    $('.check-label').each(function(index){
+        if($(this).prop('checked')){
+           idsLabels.push($(this).val());        
+        }
+    })
+    return idsLabels;
+}
+
+var showLabelsSelected = function(arrayNotes, nroLabels){    
+
+    if(nroLabels != 0){
+        $('.item-note').each(function(index){
+            $(this).hide();
+        })
+
+        for( var i=0; i < arrayNotes.length; i++){
+
+            var idNote = "#note_"+arrayNotes[i].id;
+            console.log(arrayNotes[i].id);
+            $(idNote).each(function(index){
+                $(this).show();
+            })
+        }
+    }
+    else{
+        $('.item-note').each(function(index){
+            $(this).show();
+        })        
+    }
+}

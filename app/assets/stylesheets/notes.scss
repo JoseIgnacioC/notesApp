@@ -9,6 +9,10 @@ html, body{
 	height: 100% !important;
 }
 
+.auto-margin{
+	margin: auto !important;
+}
+
 #title-page{
 	height: 10%;
 }
@@ -67,6 +71,8 @@ li.item-note{
 	height: 40px;
 	padding: 0px !important;
 	background-color: #f5f5f5;	
+	margin: 2px;
+	border-radius: 5px;
 }
 span.check-note{
 	width: 10%;
@@ -74,33 +80,24 @@ span.check-note{
 	position: absolute;
 	left: 0;
 	height: 100%;
-	border: 1px solid #e0e0e0;
+	border-right-style: solid;
+	border-width: 1px;
+	border-color: #e0e0e0;
 	border-radius: 5px 0px 0px 5px;
 }
-span.color-label-note{
-	width: 7%;
-	display: inline-flex;
-	position: absolute;
-	left: 10%;
-	height: 100%;
-}
+
 span.title-note{
-	width: 60%;
+	width: 79%;
 	display: inline-flex;
 	text-align: left;
 	position: absolute;
 	left: 11%;
-	height: 100%;	
-}
-input.input-title{
-	border: 0;
-	margin: auto !important;
+	height: 50%;	
+	top: 25%;
 	color: #616161;	
 	font-weight: bold;
 	background-color: transparent;
-}
-input.input-title:focus{
-	background-color: white;
+	margin: auto !important;
 }
 span.delete-note{
 	width: 10%;

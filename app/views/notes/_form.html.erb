@@ -1,4 +1,6 @@
-<%= form_with(model: note, local: true, :html=>{:class => "form-note"}) do |form| %>
+<%= form_with(model: @note, remote: true) do |form| %>
+
+
 
 	<% if note.errors.any? %>
     <div id="error_explanation">
@@ -12,12 +14,14 @@
     </div>
   <% end %>
 
-      <span class="field-note">
-    <%= form.text_field :title, id: "field_add_title", :class => "form-control input-title", :placeholder=> "Añadir nota" %> 
-  </span>
-  <span class="field-color-note">
-    <%= form.select :label_id, @labels.where("title != '00SINETIQUETAR00'").collect { |l| [l.title, l.id ]}, include_blank: true, class: "select-label-note" %>
-  </span>
+    <span class="field-note">
+      <%= form.text_field :title, id: "field_add_title", :class => "form-control input-title auto-margin", :placeholder=> "Añadir nota" %> 
+    </span>
+
+    <span class="field-color-note">
+      <%= form.select :label_id, @labels.where("title != '00SINETIQUETAR00'").collect { |l| [l.title, l.id ]}, include_blank: true, class: "select-label-note" %>
+    </span>
+    
     <span class="btn-add-note">
       <button id="btn-add-note" class="btn btn-default" type="submit">Agregar</button>
     </span>  
