@@ -1,0 +1,30 @@
+
+  <% if label.title != "00SINETIQUETAR00" %>
+  <li class="list-group-item item-label" id="label_<%= label.id %>">
+    
+      <span id= "checkLabel<%= label.id %>" class="span-color" style="background-color: <%= label.color %>">
+        
+        <% nameCheck = label.id.to_s %>
+                      
+        <% idCheck = label.id %>        
+        
+        <input type="checkbox" name=<%= nameCheck %> value=<%= idCheck %> class="margin-auto check-label" />  
+
+      </span>
+    
+    <%= form_for label, :id => "label", remote: true do |f| %>      
+      <span class="title-label">
+        <%= f.text_field :title %>
+      </span>
+
+      <span class="color-label">
+        <%= f.color_field( :color, :class => "color-field")  %>
+      </span>
+    <% end %>
+
+    <span class="delete-label">
+      <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, label, method: :delete, class: "check-box-note link-delete-label", remote: true,   data: { confirm: 'Are you sure?' } %> 
+    </span>
+
+  </li>
+  <% end %>            

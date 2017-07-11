@@ -1,0 +1,12 @@
+	
+$('#label_<%= @label.id %>').replaceWith(
+	"<%= escape_javascript(render @label) %>"	
+);
+
+$('#label_<%= @label.id %>').submitChangeColor();
+$('#label_<%= @label.id %>').submitChangeLabel();
+$('#label_<%= @label.id %>').filterLabels();
+
+<% @notes.each do |note| %>
+	$('#note_<%= note.id %>').find('.check-note').attr("style","background-color: <%= @label.color %>;");
+<% end %>

@@ -1,0 +1,9 @@
+$("<%= escape_javascript(render @label) %>").appendTo("#labels");
+
+$('#label_<%= @label.id %>').submitChangeColor();
+$('#label_<%= @label.id %>').submitChangeLabel();
+$('#label_<%= @label.id %>').filterLabels();
+
+$(".add-title-label").find('input[type="text"]').val("");
+$(".add-color-label").find('input[type="color"]').val("#000000");
+$('#btn-add-label').attr('disabled', true);

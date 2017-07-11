@@ -30,6 +30,7 @@ class LabelsController < ApplicationController
     respond_to do |format|
       if @label.save
         format.html { redirect_to notes_path, notice: 'Label was successfully created.' }
+        format.js
         format.json { render :show, status: :created, location: @label }
       else
         format.html { render :new }
@@ -41,10 +42,14 @@ class LabelsController < ApplicationController
   # PATCH/PUT /labels/1
   # PATCH/PUT /labels/1.json
   def update
+
+    @notes = Note.select("id").where(:label_id => @label.id);
+
     respond_to do |format|
       if @label.update(label_params)
         format.html { redirect_to notes_path, notice: 'Label was successfully updated.' }
         format.json { render :show, status: :ok, location: @label }
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @label.errors, status: :unprocessable_entity }
@@ -57,8 +62,9 @@ class LabelsController < ApplicationController
   def destroy
     @label.destroy
     respond_to do |format|
-      format.html { redirect_to labels_url, notice: 'Label was successfully destroyed.' }
+      format.html { redirect_to notes_path, notice: 'Label was successfully destroyed.' }
       format.json { head :no_content }
+      format.js   { render :layout => false }
     end
   end
 
