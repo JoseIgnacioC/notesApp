@@ -179,3 +179,77 @@ span.btn-add-note{
 .span-inflex{
 	display: inline-flex !important;
 }
+
+.div-add-description{
+	position: relative;
+	width: 100%; height: 60px;
+}
+.div-add-description textarea{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+}
+
+//Modal
+#modal-edit .modal-content{
+	background-color: #eeeeee;
+}
+div.row.row-form-edit-primary{
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 25px;
+}
+div.row.row-form-edit{	
+	margin-bottom: 25px;
+	margin-left: 25px;
+	margin-right: 25px;
+}
+
+input.input-title-edit{	
+	background-color: transparent;
+	width: 94%;
+	margin: auto;
+	font-size: 1.5em;
+	border: 0;
+	padding: 0;
+	font-weight: bold;
+	
+}
+#edit-label-note{
+	width: 50%;	
+}
+#edit-label-note select{
+	width: 70%;	
+}
+#edit-done-note{
+	width: 49%;
+	padding-left: 10%;
+}
+#edit-done-note .subtitle-form-edit{	
+	margin: 1px;	
+}
+input.check-done-edit#note_done{
+	margin-left: 20px;
+}
+
+#edit-submit-note{
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+.icon-form-edit-primary{
+	width: 5%;
+	font-size: 2em;
+	margin: auto;
+}
+.icon-form-edit-second{
+	width: 20px;
+	font-size: 1.2em;
+}
+.subtitle-form-edit{
+	font-size: 1.2em;
+	font-weight: bold;
+}

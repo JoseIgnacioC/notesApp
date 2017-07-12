@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .div-add-comment{
-	width: 100%; height: 125px;
+	width: 100%; height: 80px;
 	position: relative;
 }
 .div-add-comment form{
@@ -29,9 +29,10 @@
 	right: 0;
 }
 .div-list-comment{
-	width: 100%; height: 205px;
+	width: 100%; height: 150px;
 	position: relative;
 	overflow-y: scroll;
+	margin-bottom: 40px;
 }
 .div-comment{
 	padding: 5px 10px 5px 10px;
