@@ -1,0 +1,12 @@
+
+var nameTextArea = "#comment_textarea_<%= @comment_id %>";
+var nameComment = "#comment_<%= @comment_id %>";
+
+saveEditComment(nameTextArea, nameComment);
+
+$(nameComment).replaceWith(
+	"<%= escape_javascript(render @commenter) %>"
+);
+
+$(nameTextArea).hide();
+clickEditComment();

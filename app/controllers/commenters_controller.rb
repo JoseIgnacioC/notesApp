@@ -29,6 +29,7 @@ class CommentersController < ApplicationController
   def create
     
     @note = Note.find(params[:note_id])
+    @note_id = @note.id
     @commenter = @note.commenters.create(commenter_params)
     
     respond_to do |format|
@@ -46,9 +47,18 @@ class CommentersController < ApplicationController
   # PATCH/PUT /commenters/1
   # PATCH/PUT /commenters/1.json
   def update
+    puts "UPDATE"
+    @comment_id = params[:id]    
+    @commenter = Commenter.find(params[:id])
+    @note_id = @commenter.note_id
+    puts @note_id
+    @note = Note.find(@note_id)
+    puts @note
+
     respond_to do |format|
       if @commenter.update(commenter_params)
         format.html { redirect_to notes_path, notice: 'Commenter was successfully updated.' }
+        format.js
         format.json { render :show, status: :ok, location: @commenter }
       else
         format.html { render :edit }
@@ -63,6 +73,7 @@ class CommentersController < ApplicationController
     @commenter.destroy
     respond_to do |format|
       format.html { redirect_to commenters_url, notice: 'Commenter was successfully destroyed.' }
+      format.js
       format.json { head :no_content }
     end
   end

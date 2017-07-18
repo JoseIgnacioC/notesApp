@@ -1,1 +1,5 @@
 $("<%= escape_javascript(render @commenter) %>").appendTo("#commenters");
+
+
+$('.div-add-comment').find('textarea').val('');
+$('.div-add-comment').find('button').attr('disabled', true);

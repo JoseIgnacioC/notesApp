@@ -1,11 +1,22 @@
 $('#modal-edit').modal('hide');
-	
+
+<%
+	eqTitle = @title != @note.title
+	eqDone = @done != @note.done
+	eqDescription = @description != @note.description
+	eqIdLabel = @idLabel != @note.label_id
+%>
+
+<% if eqTitle or eqDone or eqDescription or eqIdLabel %>
 	$('#note_<%= @note.id %>').remove();
-<% if @note.done %>	
-	$("<%= escape_javascript(render @note) %>").appendTo("#notesDone");
-<% else %>
-	$("<%= escape_javascript(render @note) %>").appendTo("#notesToDo");
+	<% if @note.done %>	
+		$("<%= escape_javascript(render @note) %>").appendTo("#notesDone");
+	<% else %>
+		$("<%= escape_javascript(render @note) %>").appendTo("#notesToDo");
+	<% end %>
+
+
+	$('#note_<%= @note.id %>').submitOnCheck();
+
+	
 <% end %>
-
-
-$('#note_<%= @note.id %>').submitOnCheck();

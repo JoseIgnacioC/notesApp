@@ -5,7 +5,7 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.json
   def index
-    
+
     #Preparacion de labels
     @label = Label.new
     @labels = Label.where(:user_id => current_user.id).order(:created_at)
@@ -88,6 +88,8 @@ class NotesController < ApplicationController
 
   #GET /notes/:id/edit
   def edit
+    @note_id = params[:id]
+    @note = Note.find(@note_id)
     @labels = Label.where(:user_id => current_user.id).order(:created_at)    
   end
 
@@ -121,6 +123,11 @@ class NotesController < ApplicationController
   # PATCH/PUT /notes/1.json
   def update
     
+    @done = @note.done
+    @title = @note.title
+    @description = @note.description
+    @idLabel = @note.label_id
+
     respond_to do |format|
       
       if @note.update(note_params)

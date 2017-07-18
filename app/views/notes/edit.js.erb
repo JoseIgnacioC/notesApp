@@ -1,3 +1,25 @@
 
 $('#modal-content').html('<%= j render("formEdit") %>');
 $('#modal-edit').modal('show');
+$('#btn-add-comment').attr('disabled', true);
+$('.text_area_comment').enableAddComment();
+
+//Agregar onClick al enlace de editar de cada comentario
+clickEditComment();
+//Agregar onClick a los enlaces para agregar/editar una descripcion
+clickAddEditDescription();
+//Esconder seccion de textareas de los comentarios
+$('.container-comment-textarea').each(function(index){
+	$(this).hide();
+});
+
+//Esconder textarea de la descripción
+$('#textarea-description').hide();
+
+<% if @note.description.to_s.empty? %>
+	$('#link-edit-description').hide();
+	$('#link-add-description').show();	
+<% else %>
+	$('#link-edit-description').show();
+	$('#link-add-description').hide();	
+<% end %>

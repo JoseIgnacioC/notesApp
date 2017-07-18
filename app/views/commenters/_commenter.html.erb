@@ -1,6 +1,38 @@
-<div class="separ-comment"></div>
-<div class="div-comment">
-  <%= commenter.message %>            
-</div>
+<% if !commenter.message.nil? %>
+	<% commenter_id = commenter.id.to_s %>
 
-        
+	<li class="container-comment" id="comment_<%= commenter_id%>">
+		<p class="user-comment"> <%= current_user.email %> </p>
+		
+		<div class="div-comment">
+		  <%= commenter.message %>            
+		</div>
+
+		<% pathCommentEdit = "notes/"+@note_id.to_s+"/commenters/"+commenter_id+"/edit" %>
+		<% pathCommentDestroy = "notes/"+@note_id.to_s+"/commenters/"+commenter_id %>
+		
+		<div class="options-comment">
+			<span class="link-edit" id="link_edit_<%= commenter_id%>" data="<%= commenter_id %>"  >Editar</span>
+			|
+			<%= link_to 'Eliminar', pathCommentDestroy, method: :delete, data: { confirm: 'Are you sure?' }, class: "link-delete-comment", :remote => true %>
+		</div>
+		<div class="separ-comment"></div>
+	</li>
+
+	<li class="container-comment-textarea" id="comment_textarea_<%= commenter_id%>">
+		<p class="user-comment"> <%= current_user.email %> </p>
+		<%= form_with(model: [@note, commenter], remote: true) do |form| %>
+		
+			<div class="div-comment-textarea">			
+					<%= form.text_area :message %>			
+			</div>
+			<div class="options-comment">
+				<button id= "close-edit-comment" type="button" class="btn btn-default">Cancelar</button>
+				
+				<%= form.submit 'Guardar', :class => "btn btn-primary"%>
+			</div>
+		<% end %>
+		<div class="separ-comment"></div>
+	</li>
+<% end %>
+	        

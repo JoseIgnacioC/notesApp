@@ -12,6 +12,14 @@ html, body{
 .auto-margin{
 	margin: auto !important;
 }
+.link-edit{
+	cursor: pointer;
+	color: #337ab7;
+	text-decoration: none;
+}
+.link-edit:link .link-edit:visited{
+	text-decoration: underline;
+}
 
 #title-page{
 	height: 10%;
@@ -182,13 +190,12 @@ span.btn-add-note{
 
 .div-add-description{
 	position: relative;
-	width: 100%; height: 60px;
+	width: 100%; min-height: 60px;
 }
-.div-add-description textarea{
-	position: absolute;
+.div-add-description textarea{	
 	width: 100%;
-	height: 100%;
-	top: 0;
+	min-height: 60px;	
+	padding: 10px 20px 0px 5px;
 }
 
 //Modal
@@ -252,4 +259,19 @@ input.check-done-edit#note_done{
 .subtitle-form-edit{
 	font-size: 1.2em;
 	font-weight: bold;
+}
+
+#link-add-description{
+	text-align: center;
+}
+#textarea-description{
+	position: relative;
+	width: 100%;
+}
+#close-textarea-description{
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	color: #e0e0e0;
+	font-size: 18px;
 }

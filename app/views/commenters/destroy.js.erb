@@ -1,0 +1,5 @@
+ //Comportamiento respecto a ajax para los elementos existentes al cargar la pagina
+ $('.link-delete-comment').on('ajax:success', function() {
+   //Se busca el elemento padre del link presionado y se remueve
+     $(this).closest('li').remove();
+ });

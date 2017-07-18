@@ -39,39 +39,48 @@
         <%= form.check_box :done, id: :note_done, class: "check-done-edit" %>
       </span>      
     </div>
-    
+        
     <div class="row row-form-edit" id="edit-description-note">      
       <i class="glyphicon glyphicon-text-size icon-form-edit-second span-inflex"></i>
       <p class="span-inflex subtitle-form-edit"> Descripción </p>
+      <span id="link-edit-description" class="link-edit">- Editar</span>
       <div class="div-add-description">
-        <%= form.text_area :description, id: :description_note %>
-      </div>      
+
+        <div id="textarea-description">
+          <%= form.text_area :description, id: :description_note, onkeyup: "textAreaAdjust(this)"%>
+          <span id="close-textarea-description" class="link-edit"> <li class="glyphicon glyphicon-remove"></li></span>
+        </div>
+
+        <div id="text-description">
+          <span id = "text-note-description"> <%= @note.description%> </span>
+          <div id = "link-add-description" class="link-edit" data="<%= @note.id%>"  > <span class="glyphicon glyphicon-align-left"></span> Agregar descripción</div>
+        </div>
+      </div>
     </div>
       
     <div class="row">
       <span id="edit-submit-note">
 
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
         <%= form.submit 'Cambiar', :class => "btn btn-primary"%>          
       </span>
     </div>        
   <% end %>
 
   <div class="row row-form-edit" style="margin-top: 0px; margin-bottom: 15px;">
-    <span id="edit-add-commenter-note">
-      
-      <i class="glyphicon glyphicon-comment icon-form-edit-second span-inflex"></i>
-      <p class="subtitle-form-edit span-inflex"> Añadir comentario </p>      
+      <span id="edit-add-commenter-note">      
+        <i class="glyphicon glyphicon-comment icon-form-edit-second span-inflex"></i>
+        <p class="subtitle-form-edit span-inflex"> Añadir comentario </p>      
+      </span>
       <div class="div-add-comment">
         <%= form_for([@note, @note.commenters.build], remote: true) do |form|%>
         
-          <%= form.text_area :message, id: :commenter_message %>
+          <%= form.text_area :message, id: :commenter_message, class: "text_area_comment", onkeyup: "textAreaAdjust(this)" %>
           <div class="div-submit-comment">
-            <%= form.submit 'Agregar', class: "btn btn-default" %>
+            <button id="btn-add-comment" class="btn btn-default" type="submit">Agregar</button>
           </div>
         <% end %>
-      </div>
-    </span>
+      </div>    
   </div>
 
   <div class="row row-form-edit">
@@ -79,10 +88,10 @@
       <i class="glyphicon glyphicon-list-alt icon-form-edit-second span-inflex"></i>
       <p class="subtitle-form-edit span-inflex"> Comentarios</p>
 
-      <div class="div-list-comment" id="commenters">
+      <ul class="div-list-comment list-group" id="commenters">
 
-        <%= render @note.commenters %>
+        <%= render @note.commenters.order('created_at') %>
 
-      </div>
+      </ul>
     </span>
   </div>

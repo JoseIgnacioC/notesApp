@@ -2,48 +2,69 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.div-add-comment{
-	width: 100%; height: 80px;
-	position: relative;
-}
-.div-add-comment form{
-	position: absolute;
-	width: 100%;
-	height: 100%;
+textarea{
+	resize:none;
 }
 
-.div-add-comment  form textarea{
-	position: absolute;
+.div-add-comment{
 	width: 100%;
-	height: 80%;
+	min-height: 80px;
+	position: relative;
+}
+
+.div-add-comment  form textarea{	
+	width: 100%;
+	min-height: 60px;
 	top: 0;
+	overflow:hidden	
 }
-.div-submit-comment{
-	position: absolute;
-	width: 100%;
-	height: 20%;
-	bottom: 0;	
+.div-submit-comment{	
+	width: 100%;	
+	position: relative;	
 }
-.div-submit-comment input{
-	position: absolute;
-	right: 0;
+.div-submit-comment button{
+	float: right;	
 }
 .div-list-comment{
-	width: 100%; height: 150px;
+	width: 100%; height: 250px;
 	position: relative;
 	overflow-y: scroll;
 	margin-bottom: 40px;
 }
+.container-comment{
+	margin-top: 20px;	
+}
+.container-comment-textarea{
+	margin-top: 20px;
+}
+.user-comment{
+	margin: 0px;
+	font-weight: bold;
+}
 .div-comment{
 	padding: 5px 10px 5px 10px;
 	background-color: white;
-	margin-bottom: 5px;
+	margin: 0px 20px 5px 20px;
 	border-radius: 5px;	
 }
+.div-comment-textarea{
+	margin: 0px 20px 5px 20px;
+	position: relative;
+}
+.div-comment-textarea textarea{
+	border-radius: 5px;	
+	width: 100%;
+	padding: 5px 10px 0px 10px;
+}
+
+.options-comment{
+	text-align: right;
+	margin-right: 20px;
+	margin-bottom: 5px;
+}
 .separ-comment{	
-	width: 90%;
+	width: 100%;
 	height: 1px;
-	background-color: #bdbdbd;
-	margin-left: 5%;
+	background-color: #e0e0e0;	
 	margin-bottom: 5px;
 }

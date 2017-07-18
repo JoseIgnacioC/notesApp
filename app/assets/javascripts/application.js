@@ -26,12 +26,13 @@ $(document).ready(function(){
     })
 
     //Deshabilitar  y habilitar boton del formulario para agregar
-	$('#btn-add-note').attr('disabled', true);	
+    $('#btn-add-note').attr('disabled', true);  
     $('#btn-add-label').attr('disabled', true);
+    $('#btn-add-comment').attr('disabled', true);
 
     console.log("HOLA");
-
-	$('#field_add_title').keyup(function(){
+    //Boton para agregar nota
+    $('#field_add_title').keyup(function(){
         if($(this).val().length !=0){
             $('#btn-add-note').attr('disabled', false);
         }
@@ -40,7 +41,7 @@ $(document).ready(function(){
             $('#btn-add-note').attr('disabled', true);        
         }
     })
-
+    //Boton para agregar label
     $('#field_add_label').keyup(function(){
         if($(this).val().length !=0){
             $('#btn-add-label').attr('disabled', false);
@@ -51,6 +52,25 @@ $(document).ready(function(){
         }
     })
 });
+
+//Habilitar y deshabilitar boton de agregar comentario
+jQuery.fn.enableAddComment = function() {
+
+    this.keyup(function(){
+        if($(this).val().length !=0){
+            $('#btn-add-comment').attr('disabled', false);
+        }
+        else
+        {
+            $('#btn-add-comment').attr('disabled', true);        
+        }
+    });
+    return this;
+}
+$(function() {
+    $('.text_area_comment').enableAddComment();
+});
+
 
 //Funcion para actualizar estado de una nota
 jQuery.fn.submitOnCheck = function() {    
@@ -152,4 +172,116 @@ var showLabelsSelected = function(arrayNotes, nroLabels){
             $(this).show();
         })        
     }
+}
+
+
+
+//Cambiar a textarea cuando se edite un comentario y visceversa
+var closeEditComment = function(nameTextArea, idComment){        
+    
+    $(nameTextArea).hide();
+    $(idComment).show();
+}
+var saveEditComment = function(nameTextArea, idComment){        
+    
+    $(nameTextArea).remove();
+    $(idComment).show();
+}
+var editComment = function(){
+    //console.log($(this));
+    //alert($(this).attr('data'));        
+    var divComment = $(this).closest('li');        
+    var alturaDiv = divComment.find('.div-comment').height();
+    alturaDiv = alturaDiv+60;
+    alturaDiv = alturaDiv + "px";
+    divComment.hide();
+    
+    var idComment = $(this).attr('data');
+    var nameComment = "#comment_"+ idComment;
+    var nameTextArea = "#comment_textarea_"+ idComment;
+
+    $(nameTextArea).show();
+
+    $(nameTextArea).find('textarea')[0].style.height = alturaDiv;
+
+    var buttonClose = $(nameTextArea).find('button');
+    
+    buttonClose[0].addEventListener('click', function(){
+        closeEditComment(nameTextArea, nameComment);
+    }, false);
+        
+    
+}    
+var clickEditComment = function() {
+    var classname = document.getElementsByClassName("link-edit-comment");
+    
+    for (var i = 0; i < classname.length; i++){
+        classname[i].addEventListener('click', editComment, false);
+    }
+}
+
+
+//Habilitar y deshabilitar boton de guardar comentario editado
+jQuery.fn.enableAddComment = function() {
+
+    this.keyup(function(){
+        if($(this).val().length !=0){
+            $('#btn-add-comment').attr('disabled', false);
+        }
+        else
+        {
+            $('#btn-add-comment').attr('disabled', true);        
+        }
+    });
+    return this;
+}
+$(function() {
+    $('.text_area_comment').enableAddComment();
+});
+
+//Ajustar altura de un textarea
+var textAreaAdjust = function(o){
+  o.style.height = "1px";
+  o.style.height = (25+o.scrollHeight)+"px";
+}
+
+//Agregar y editar descripción
+
+var addDescription = function(){
+    $('#textarea-description').show();
+    $('#text-description').hide();
+}
+var editDescription = function(){
+    $('#textarea-description').show();
+    $('#text-description').hide();
+    $('#link-edit-description').hide();
+}
+
+var closeTextareaDescription = function(){
+    var description = $('#textarea-description textarea').val();
+
+    $('#textarea-description').hide();
+    $('#text-description').show();
+    var htmlDescription = "<span id = 'text-note-description'>"+description+"</span>";
+    $('#text-note-description').replaceWith(htmlDescription);
+
+    if(description == ""){
+        $('#link-edit-description').hide();
+        $('#link-add-description').show();
+    }
+    else{
+        $('#link-add-description').hide();
+        $('#link-edit-description').show();
+    }
+}
+
+var clickAddEditDescription = function() {
+    var idNameAdd = document.getElementById("link-add-description");
+    idNameAdd.addEventListener('click', addDescription, false);
+    
+    var idnameEdit = document.getElementById("link-edit-description");    
+    idnameEdit.addEventListener('click', editDescription, false);
+
+    var idnameClose = document.getElementById("close-textarea-description");
+    idnameClose.addEventListener('click', closeTextareaDescription, false);
 }
